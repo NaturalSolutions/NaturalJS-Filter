@@ -74,16 +74,11 @@ define([
             }).fail(function (msg) {
                 console.log(msg);
             });
-
-
-
-
-
         },
 
         initFilters: function (data) {
             var form;
-
+            var _this = this;
             for (var key in data) {
                 form = this.initFilter(data[key]);
                 $('#' + this.filterContainer).append(form.el);
@@ -103,6 +98,12 @@ define([
 
                 this.forms.push(form);
             };
+            $(this.filterContainer).find('input').on('keypress', function(e) {
+                if( e.keyCode == 13  ){
+                    e.preventDefault();
+                    _this.update();
+                }
+            });
             if (this.ToggleFilter) {
                 for (var i = 0; i < this.forms.length; i++) {
                     
@@ -131,11 +132,8 @@ define([
                     }
                     
                 }
-                
-
-            }
+            };
         },
-
 
         initFilter: function (dataRow) {
             var type = dataRow['type'];
@@ -196,17 +194,11 @@ define([
                 templateData: { filterName: dataRow['title'], ColumnType: type, fieldname: fieldName }
             }).render();
 
-            //console.log(form.model);
-
             return form;
         },
 
-
         changeInput: function (options) {
         },
-
-
-
 
         clickedCheck: function (e) {
             // Keep the new check value
@@ -226,13 +218,10 @@ define([
                     $(this).prop('checked', IsChecked);
                 });
             }
-
         },
 
         displayFilter: function () {
-
         },
-
 
         getOpOptions: function (type) {
             var operatorsOptions;
@@ -270,7 +259,6 @@ define([
                     currentForm.$el.find('input.filter').addClass('active');
                 } else {
                     currentForm.$el.find('input.filter').removeClass('active')
-
                 };
             };
             //console.log( this.filters);
@@ -280,9 +268,6 @@ define([
                 this.clientFilter(this.filters)
             }
         },
-
-
-
 
         reset: function () {
             $('#' + this.filterContainer).empty();
@@ -296,7 +281,6 @@ define([
             }
         },
 
-
         ///////////////////////// FILTRE CLIENT //////////////////////////////
 
         clientFilter: function (filters) {
@@ -306,7 +290,6 @@ define([
             var col, op, val;
             var result = [];
             var ctx = this;
-
 
             var pass, rx, objVal;
             if (filters.length) {
@@ -320,7 +303,6 @@ define([
                             col = filter['Column'];
                             op = filter['Operator'];
                             val = filter['Value'];
-
                             objVal = obj.attributes[col];
 
                             //date
@@ -341,7 +323,6 @@ define([
                 this.com.action('filter', tmp);
             }
         },
-
 
         testMatch: function (val, op, objVal) {
             var rx;
@@ -445,10 +426,8 @@ define([
                     console.log('wrong opperator');
                     return false;
                     break;
-
             };
             return true;
-
         },
 
         interaction: function (action, id) {
@@ -463,6 +442,5 @@ define([
             // Rien à faire
             return;
         },
-
     });
 });
