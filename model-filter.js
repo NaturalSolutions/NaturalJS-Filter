@@ -280,7 +280,7 @@
         initFilters: function (data) {
             var form;
             var _this = this;
-
+			this.forms = [];
             for (var key in data) {
                 form = this.initFilter(data[key]);
                 this.getContainer().append(form.el);
