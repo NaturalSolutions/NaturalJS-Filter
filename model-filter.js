@@ -782,12 +782,17 @@
                             val = filter['Value'];
 
                             objVal = obj.attributes[col];
-
-                            //date
-                            if (moment.isMoment(val)) {
-                                pass = ctx.testDate(val, op, objVal);
+                            //date  
+                            var dt = moment(val, 'DD/MM/YYYY HH:mm:ss'); 
+                            var operator = false;
+                            if(['=', '>','<','>=','<=','<>'].indexOf(op) >= 0) {
+                                operator = true;
+                            }
+                            if (dt.isValid() && operator){
+                            //if (moment(val).isValid) {
+                                pass = ctx.testDate(objVal, op, val);
                             } else {
-                                pass = ctx.testMatch(val, op, objVal);
+                                pass = ctx.testMatch (objVal, op, val);
                             };
                         }
                     };
@@ -828,6 +833,7 @@
                     };
                     break;
                 case '=':
+                case 'equals':
                     if (!(objVal == val)) {
                         return false;
                     };
@@ -866,8 +872,8 @@
         },
 
         testDate: function (val, op, objVal) {
-            var dateA = moment(val);
-            var dateB = moment(objVal);
+            var dateA = moment(val,'DD/MM/YYYY HH:mm:ss');
+            var dateB = moment(objVal,'DD/MM/YYYY HH:mm:ss');
 
             switch (op.toLowerCase()) {
                 case '=':
@@ -892,12 +898,12 @@
                     break;
                     //todo : verify those 2
                 case '>=':
-                    if (!(dateA.isAfter(dateB)) || !(dateB.isSame(dateA))) {
+                    if (!(dateA.isAfter(dateB)) && !(dateB.isSame(dateA))) {
                         return false;
                     };
                     break;
                 case '<=':
-                    if (!(dateA.isBefore(dateB)) || !(dateB.isSame(dateA))) {
+                    if (!(dateA.isBefore(dateB)) && !(dateB.isSame(dateA))) {
                         return false;
                     };
                     break;
@@ -910,8 +916,8 @@
             return true;
 
         },
-
-        interaction: function (action, params) {
+		
+		interaction: function (action, params) {
             if (this.com) {
                 this.com.action(action, params);
             } else {
