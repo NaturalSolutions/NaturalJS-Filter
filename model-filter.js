@@ -280,7 +280,7 @@
         initFilters: function (data) {
             var form;
             var _this = this;
-
+			this.forms = [];
             for (var key in data) {
                 form = this.initFilter(data[key]);
                 this.getContainer().append(form.el);
@@ -479,8 +479,9 @@
                     //this.model.set('schema', schema);$el = 
                     form.initialize();
                     this.render();
-                    console.log(this);
-                    $('#filters >.filter').eq(this.indice).html(this.$el);
+                    //console.log(this);
+                    _this.getContainer().find(' > .filter').eq(this.indice).html(this.$el);
+                    //$('#filters >.filter').eq(this.indice).html(this.$el);
                 }
                 /*if (this.indice == 0) {
                     $('#filters').prepend(this.$el);
