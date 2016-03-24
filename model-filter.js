@@ -819,16 +819,23 @@
                     };
                     break;
                 case 'is not':
-                    val = val.toUpperCase();
-                    rx = new RegExp('^(^' + val + ')$'); //todo : not sure
-                    if (!rx.test(objVal.toUpperCase())) {
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp('^(^' + objVal + ')$'); //todo : not sure
+                    if (rx.test(val.toUpperCase())) {
                         return false;
                     };
                     break;
                 case 'contains':
-                    val = val.toUpperCase();
-                    rx = new RegExp(val);
-                    if (!rx.test(objVal.toUpperCase())) {
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp(objVal);
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'not contains':
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp(objVal);
+                    if (rx.test(val.toUpperCase())) {
                         return false;
                     };
                     break;
@@ -863,7 +870,56 @@
                         return false;
                     };
                     break;
+                case 'begins':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp("^" + objVal, "i");
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'not begin':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp("^" + objVal, "i");
+                    if (rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'ends':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp( objVal +  '$', "i");
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                 case 'not end':  
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp( objVal +  '$', "i");
+                    if (rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'in':  
+                    var elems = objVal.split(',');
+                    var elems2 = objVal.split(';');
+                    var tab;
+                    if (elems.length >1){
+                        tab = elems;
+                    } else if(elems2.length >1){
+                        tab = elems2;
+                    }
+                    else {
+                        return false;
+                    }
+                    for (var i=0; i< tab.length;i++){
+                        var elem = tab[i].toUpperCase();
+                        if ((elem == val)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                    
                 default:
+
                     console.warn('wrong opperator');
                     return false;
                     break;
