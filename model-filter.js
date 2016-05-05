@@ -483,6 +483,7 @@
 
                 if (this.previousOperator == 'IN' || NewOperator == 'IN') {
                     // on agit que si on passe de in � autre chose ou autre chose � in, sinon pas d'action
+
                     if (NewOperator == 'IN') {
                         this.schema.Value = _this.initValuesShemaIn(this.schema.Value);
                     }
