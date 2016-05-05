@@ -782,12 +782,17 @@
                             val = filter['Value'];
 
                             objVal = obj.attributes[col];
-
-                            //date
-                            if (moment.isMoment(val)) {
-                                pass = ctx.testDate(val, op, objVal);
+                            //date  
+                            var dt = moment(val, 'DD/MM/YYYY HH:mm:ss'); 
+                            var operator = false;
+                            if(['=', '>','<','>=','<=','<>'].indexOf(op) >= 0) {
+                                operator = true;
+                            }
+                            if (dt.isValid() && operator){
+                            //if (moment(val).isValid) {
+                                pass = ctx.testDate(objVal, op, val);
                             } else {
-                                pass = ctx.testMatch(val, op, objVal);
+                                pass = ctx.testMatch (objVal, op, val);
                             };
                         }
                     };
@@ -814,20 +819,28 @@
                     };
                     break;
                 case 'is not':
-                    val = val.toUpperCase();
-                    rx = new RegExp('^(^' + val + ')$'); //todo : not sure
-                    if (!rx.test(objVal.toUpperCase())) {
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp('^(^' + objVal + ')$'); //todo : not sure
+                    if (rx.test(val.toUpperCase())) {
                         return false;
                     };
                     break;
                 case 'contains':
-                    val = val.toUpperCase();
-                    rx = new RegExp(val);
-                    if (!rx.test(objVal.toUpperCase())) {
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp(objVal);
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'not contains':
+                    objVal = objVal.toUpperCase();
+                    rx = new RegExp(objVal);
+                    if (rx.test(val.toUpperCase())) {
                         return false;
                     };
                     break;
                 case '=':
+                case 'equals':
                     if (!(objVal == val)) {
                         return false;
                     };
@@ -857,7 +870,56 @@
                         return false;
                     };
                     break;
+                case 'begins':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp("^" + objVal, "i");
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'not begin':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp("^" + objVal, "i");
+                    if (rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'ends':
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp( objVal +  '$', "i");
+                    if (!rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                 case 'not end':  
+                    objVal = objVal.toUpperCase();
+                    rx = new  RegExp( objVal +  '$', "i");
+                    if (rx.test(val.toUpperCase())) {
+                        return false;
+                    };
+                    break;
+                case 'in':  
+                    var elems = objVal.split(',');
+                    var elems2 = objVal.split(';');
+                    var tab;
+                    if (elems.length >1){
+                        tab = elems;
+                    } else if(elems2.length >1){
+                        tab = elems2;
+                    }
+                    else {
+                        return false;
+                    }
+                    for (var i=0; i< tab.length;i++){
+                        var elem = tab[i].toUpperCase();
+                        if ((elem == val)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                    
                 default:
+
                     console.warn('wrong opperator');
                     return false;
                     break;
@@ -866,8 +928,8 @@
         },
 
         testDate: function (val, op, objVal) {
-            var dateA = moment(val);
-            var dateB = moment(objVal);
+            var dateA = moment(val,'DD/MM/YYYY HH:mm:ss');
+            var dateB = moment(objVal,'DD/MM/YYYY HH:mm:ss');
 
             switch (op.toLowerCase()) {
                 case '=':
@@ -892,12 +954,12 @@
                     break;
                     //todo : verify those 2
                 case '>=':
-                    if (!(dateA.isAfter(dateB)) || !(dateB.isSame(dateA))) {
+                    if (!(dateA.isAfter(dateB)) && !(dateB.isSame(dateA))) {
                         return false;
                     };
                     break;
                 case '<=':
-                    if (!(dateA.isBefore(dateB)) || !(dateB.isSame(dateA))) {
+                    if (!(dateA.isBefore(dateB)) && !(dateB.isSame(dateA))) {
                         return false;
                     };
                     break;
@@ -910,8 +972,8 @@
             return true;
 
         },
-
-        interaction: function (action, params) {
+		
+		interaction: function (action, params) {
             if (this.com) {
                 this.com.action(action, params);
             } else {
