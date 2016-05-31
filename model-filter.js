@@ -130,7 +130,7 @@
     Backbone.Form.validators.INNumber = function (options) {
         return function INNumber(value) {
 
-            console.log('this', this, value,options);
+            //console.log('this', this, value,options);
             if (value == '') return null ;
             //return null;
             //var myRegEx = new RegExp('[\d*\s]*\d*$');
@@ -306,7 +306,7 @@
             this.getContainer().keypress(function (e) {                                       
                     
                     if (e.which == 13) {
-                        console.log('keypressed') ;
+                        //console.log('keypressed') ;
                         e.preventDefault();
                         _this.update() ;
                         //do something   
@@ -464,7 +464,7 @@
                 if (this.previousOperator == 'IN' || NewOperator == 'IN') {
                     // on agit que si on passe de in à autre chose ou autre chose à in, sinon pas d'action
 
-                    console.log(this);
+                    //console.log(this);
                     if (NewOperator == 'IN') {
                         this.schema.Value = _this.initValuesShemaIn(this.schema.Value);
                     }
@@ -475,7 +475,7 @@
                     this.model.set('Value', '');
                     this.model.set('Operator', NewOperator);
 
-                    console.log(this);
+                    //console.log(this);
                     //this.model.set('schema', schema);$el = 
                     form.initialize();
                     this.render();
@@ -491,7 +491,7 @@
                 }*/
                 this.previousOperator = NewOperator;
             });
-            console.log(form);
+            //console.log(form);
             return form;
 
         },
@@ -782,6 +782,8 @@
                             val = filter['Value'];
 
                             objVal = obj.attributes[col];
+
+                            var format = obj.get('format');
                             //date  
                             var dt = moment(val, 'DD/MM/YYYY HH:mm:ss'); 
                             var operator = false;
@@ -790,9 +792,13 @@
                             }
                             if (dt.isValid() && operator){
                             //if (moment(val).isValid) {
-                                pass = ctx.testDate(objVal, op, val);
+                                pass = ctx.testDate(objVal, op, val,format);
                             } else {
-                                pass = ctx.testMatch (objVal, op, val);
+                                if (objVal &&  val) {
+                                    pass = ctx.testMatch (objVal, op, val);
+                                } else { 
+                                    pass = false;
+                                }
                             };
                         }
                     };
@@ -927,9 +933,14 @@
             return true;
         },
 
-        testDate: function (val, op, objVal) {
+        testDate: function (val, op, objVal,format) {
             var dateA = moment(val,'DD/MM/YYYY HH:mm:ss');
             var dateB = moment(objVal,'DD/MM/YYYY HH:mm:ss');
+
+            if (format) {
+                dateA = moment(val,format);
+            }
+
 
             switch (op.toLowerCase()) {
                 case '=':
