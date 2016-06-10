@@ -497,9 +497,10 @@
                     this.render();
                     _this.getContainer().find(' > .filter').eq(this.indice).html(this.$el);
                 }
+                elVal = _this.getContainer().find(' > .filter').eq(this.indice).find('span.filter');
+
                 if ((this.previousOperator && this.previousOperator.indexOf('null')!=-1 )|| NewOperator.indexOf('null')!=-1) {
                     if (NewOperator.indexOf('null')!=-1) {
-                        elVal = _this.getContainer().find(' > .filter').eq(this.indice).find('span.filter');
                         elVal.addClass('hide');
                         if (this.model.get('ColumnType') != 'Number'){
                             elVal.find('input').val('null').attr('data_value','null').change();
@@ -509,15 +510,17 @@
 
                     }
                     else {
-                        elVal = _this.getContainer().find(' > .filter').eq(this.indice).find('span.filter');
                         elVal.find('input').val('').attr('data_value','').change();
+                        var errorEL = _this.getContainer().find(' > .filter').eq(this.indice).find('.error');
+                        errorEL.removeClass('error');
                         elVal.removeClass('hide');
-
-
                         //_this.getContainer().find(' > .filter').eq(this.indice).show();
                     }
-
-
+                } else {
+                    var errorEL = _this.getContainer().find(' > .filter').eq(this.indice).find('.error');
+                    errorEL.removeClass('error');
+                    elVal.find('input').val('').attr('data_value','').change();
+                    elVal.removeClass('hide');
                 }
                 /*if (this.indice == 0) {
                     $('#filters').prepend(this.$el);
