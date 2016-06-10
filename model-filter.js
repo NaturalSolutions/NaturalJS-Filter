@@ -429,7 +429,7 @@
                 }
             }
             else {
-                operatorValue = schm.Operator.options[0];
+                operatorValue = schm.Operator.options[0].label;
             }
 
             if (this.firstOperator ) {
@@ -467,7 +467,7 @@
                 data: Formdata,
                 templateData: { filterName: dataRow['title'], ColumnType: type, fieldname: fieldName }
             }).render();
-            form.previousOperator = mod.get('Operator');
+            form.previousOperator = mod.get('Operator').val;
             form.indice = this.forms.length;
 
             if (this.firstOperator ) {
