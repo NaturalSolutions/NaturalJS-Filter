@@ -708,7 +708,7 @@
                 currentForm.$el.find('input.filter').removeClass('active')
                 if (!currentForm.validate()) {
                     value = currentForm.getValue();
-                    delete value.ColumnType;
+                    //delete value.ColumnType;
 
                     if (value.Operator == 'between') {
                         var ValueFrom = { Operator: '>=', ColumnType: value.ColumnType, Column: value.Column, Value: null };
