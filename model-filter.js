@@ -519,7 +519,7 @@
                 } else {
                     var errorEL = _this.getContainer().find(' > .filter').eq(this.indice).find('.error');
                     errorEL.removeClass('error');
-                    elVal.find('input').val('').attr('data_value','').change();
+                    //elVal.find('input').val('').attr('data_value','').change();
                     elVal.removeClass('hide');
                 }
                 /*if (this.indice == 0) {
