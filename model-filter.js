@@ -468,6 +468,9 @@
                 templateData: { filterName: dataRow['title'], ColumnType: type, fieldname: fieldName }
             }).render();
             form.previousOperator = mod.get('Operator').val;
+            if (!form.previousOperator){
+                form.previousOperator = mod.get('Operator');
+            }
             form.indice = this.forms.length;
 
             if (this.firstOperator ) {
