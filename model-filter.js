@@ -45,7 +45,7 @@
     var tpl = '<form class="filter form-horizontal filter-form-<%=fieldname%>">'
         + '<div   class="filterdiv" >'
     + '<br><span data-editors="Column"></span>'
-        + '<span class="col-xs-3"><b><%= filterName %>&nbsp:</b></span>'
+        + '<span class="col-xs-3"><b><%= filterName %>:</b></span>'
        + '<span data-editors="ColumnType"></span>'
 
        + '<span class="col-xs-3" data-editors="Operator"></span>'
@@ -60,7 +60,7 @@
     '<form class="filter form-horizontal filter-form-<%=fieldname%>" style="position:relative">'
     + '<br><div   style="margin-bottom: 30px;">'
         + '<span data-editors="Column"></span>'
-        + '<span class="col-xs-3"><b><%= filterName %>&nbsp:</b></span>'
+        + '<span class="col-xs-3"><b><%= filterName %>:</b></span>'
         + '<span data-editors="ColumnType"></span>'
 
         + '<span class="hidden col-xs-4" data-editors="Operator"></span>'
@@ -74,7 +74,7 @@
    '<form class="filter form-horizontal filter-form-<%=fieldname%>" style="position:relative">'
    + '<div   class="clearfix">'
        + '<span data-editors="Column"></span>'
-       + '<span class="col-xs-3"><b><%= filterName %>&nbsp:</b></span>'
+       + '<span class="col-xs-3"><b><%= filterName %>:</b></span>'
        + '<span data-editors="ColumnType"></span>'
        + '<span class="hidden col-xs-4" data-editors="Operator"></span>'
        + '<span class="col-xs-3">From</span><span class="col-xs-6 filterinterval" data-editors="From"></span>'
