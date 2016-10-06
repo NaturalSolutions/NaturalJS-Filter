@@ -83,7 +83,7 @@
        + '<span class="col-xs-3 col-xs-offset-3">To</span><span class="col-xs-6 filterinterval" data-editors="To"></span>'
    + '</div>'
    + '</form>'
-   
+
 
 
 
@@ -133,8 +133,8 @@
             //return null;
             //var myRegEx = new RegExp('[\d*\s]*\d*$');
             var myRegEx = new RegExp('^([0-9]+(\.[0-9]+)?[\t|\,|\x20]*)+$');
-            
-            
+
+
             if (myRegEx.test(value)) {
                 return null;
             }
@@ -150,7 +150,7 @@
         };
     };
     /*
-    
+
     define([
         'jquery',
         'underscore',
@@ -297,18 +297,18 @@
                     console.log('THGIS', this);
                     $(this).datetimepicker();
                 });*/
-                
+
                 this.forms.push(form);
                 this.filterLoaded();
             };
 
-            this.getContainer().keypress(function (e) {                                       
-                    
+            this.getContainer().keypress(function (e) {
+
                     if (e.which == 13) {
                         //console.log('keypressed') ;
                         e.preventDefault();
                         _this.update() ;
-                        //do something   
+                        //do something
                     }
                 });
 
@@ -401,7 +401,7 @@
             var fieldName = dataRow['name'];
 
             var operatorList =  operators || this.getOpOptions(type);
-            
+
             var schm = {
                 Column: { name: 'Column', type: 'Hidden', title: dataRow['label'], value: fieldName },
                 ColumnType: { name: 'ColumnType', title: '', type: 'Hidden', value: type },
@@ -441,7 +441,7 @@
                     }
                 }
             }
-            var Formdata = {    
+            var Formdata = {
                 ColumnType: type,
                 Column: fieldName,
                 Operator: operatorValue
@@ -814,6 +814,8 @@
                     pass = true;
 
                     for (var i = filters.length - 1; i >= 0; i--) {
+                        console.log('in filer',filters);
+
                         if (pass) {
                             filter = filters[i];
                             col = filter['Column'];
@@ -823,19 +825,22 @@
                             objVal = obj.attributes[col];
 
                             var format = obj.get('format');
-                            //date  
-                            var dt = moment(val, 'DD/MM/YYYY HH:mm:ss'); 
+                            //date
+                            var dt = moment(val, 'DD/MM/YYYY HH:mm:ss');
                             var operator = false;
                             if(['=', '>','<','>=','<=','<>'].indexOf(op) >= 0) {
                                 operator = true;
                             }
-                            if (dt.isValid() && operator){
+                            if (dt.isValid() && operator && !$.isNumeric(val)){
                             //if (moment(val).isValid) {
                                 pass = ctx.testDate(objVal, op, val,format);
                             } else {
-                                if (objVal &&  val) {
-                                    pass = ctx.testMatch (objVal, op, val);
-                                } else { 
+                                if ((objVal!=null && objVal!=undefined) &&  val!=null &&  val!=undefined) {
+                                  if ($.isNumeric(val)){
+                                    val = parseFloat(val);
+                                  }
+                                    pass = ctx.testMatch (val, op, objVal);
+                                } else {
                                     pass = false;
                                 }
                             };
@@ -936,14 +941,14 @@
                         return false;
                     };
                     break;
-                 case 'not end':  
+                 case 'not end':
                     objVal = objVal.toUpperCase();
                     rx = new  RegExp( objVal +  '$', "i");
                     if (rx.test(val.toUpperCase())) {
                         return false;
                     };
                     break;
-                case 'in':  
+                case 'in':
                     var elems = objVal.split(',');
                     var elems2 = objVal.split(';');
                     var tab;
@@ -962,7 +967,7 @@
                         }
                     }
                     return false;
-                    
+
                 default:
 
                     console.warn('wrong opperator');
@@ -1022,7 +1027,7 @@
             return true;
 
         },
-        
+
         interaction: function (action, params) {
             if (this.com) {
                 this.com.action(action, params);
