@@ -498,6 +498,14 @@
 
                     form.initialize();
                     this.render();
+                    form.$el.find('button#removeFilter').on('click', function () {
+                        _this.getContainer().find(form.el).remove();
+                        var i = _this.forms.indexOf(form);
+                        if (i > -1) {
+                            _this.forms.splice(i, 1);
+                        }
+                        return;
+                    });
                     _this.getContainer().find(' > .filter').eq(this.indice).html(this.$el);
                 }
                 elVal = _this.getContainer().find(' > .filter').eq(this.indice).find('span.filter');
